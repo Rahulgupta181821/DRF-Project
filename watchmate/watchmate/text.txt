@@ -1,0 +1,30 @@
+pip freeze
+python -m venv env
+pip install "Django>=4.2,<5.0"
+django-admin startproject watchmate
+python manage.py runserver
+python manage.py startapp watchlist_app
+
+*******************************Opne Shell************************
+(menv) PS E:\DRF-Demo\imdb_demo> python manage.py shell
+Python 3.9.12 (tags/v3.9.12:b28265d, Mar 23 2022, 23:52:46) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> Movie.Objects.all()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'Movie' is not defined
+>>> Movie.objects.all()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'Movie' is not defined
+>>> from imdb_app.models import Movie
+>>> Movie.Objects.all()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: type object 'Movie' has no attribute 'Objects'
+>>> Movie.objects.all()
+<QuerySet []>
+>>>
+
+*****************************************
