@@ -8,7 +8,7 @@ from rest_framework import status
 class StreamPlateformAV(APIView):
     def get(self, request):
         stream_plateform = StreamPlateform.objects.all()
-        serializer = StreamPlateformSerializer(stream_plateform, many = True)
+        serializer = StreamPlateformSerializer(stream_plateform, many = True, context={'request': request})
         return Response(serializer.data)
     
     def post(self,request):
@@ -25,7 +25,7 @@ class StreamPlateformDetailAV(APIView):
             stream_plateform = StreamPlateform.objects.get(pk=pk)
         except StreamPlateform.DoesNotExist:
             return Response({'error': 'Not Found'},status = status.HTTP_404_NOT_FOUND)
-        serializer= StreamPlateformSerializer(stream_plateform)
+        serializer= StreamPlateformSerializer(stream_plateform,context={'request': request})
         return Response(serializer.data)
     
     def put(self,request,pk):
