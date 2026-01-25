@@ -1,3 +1,5 @@
+ | [>>GenericAPI and Mixin](./genericAPI_and_mixin.md)
+
 # Serializer Realation
 
 ## models.py 
@@ -207,3 +209,49 @@ watchlist = serializers.HyperlinkedRelatedField(
 #### Examples:
 ![Screen Shot](images/hyperlink_relation.png)
 
+
+<i>Now, we create a new model with which we can rate movies.</i>
+## Rating Models:
+### models.py
+```python
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+class Review(models.Model):
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
+    description = models.CharField(max_length=200, null=True)
+    Watchlist = models.ForeignKey(WatchList,on_delete=models.CASCADE, related_name="reviews")
+    active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now=True)
+    update = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return str(self.rating) + " | " + self.Watchlist.title
+```
+
+### serializers.py
+```python
+from watchlist_app.models import WatchList, StreamPlateform,Review
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = "__all__"
+class WatchListSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only = True)
+    class Meta:
+        model = WatchList
+        fields = "__all__"
+    
+```
+In WatchListSerializer, the relationship name should be the same as the <i>related_name</i> defined in the model.
+
+```python
+Watchlist = models.ForeignKey(WatchList,on_delete=models.CASCADE, related_name="reviews")
+```
+
+
+#### Eaxmples:
+![Screen shot](images/reviews.png)
+
+🎉 CONGRATULATIONS ! 🎉
+
+ | [>>GenericAPI and Mixin](./genericAPI_and_mixin.md)
